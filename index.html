@@ -78,18 +78,16 @@ body[data-screen="cover"] .cover h1 span{animation:pop .9s cubic-bezier(.2,1.6,.
 .side.o{--tc:#ffa04d;background:radial-gradient(circle at 30% 30%,#ffa04d,#ff6a00);translate:-100% 0}
 .side.p{--tc:#c79bff;background:radial-gradient(circle at 70% 30%,#8f4ee0,#4b1a8f);translate:100% 0}
 body[data-screen="mae"] .side{translate:0 0}
-.crew{position:relative;width:100%;flex:1;display:flex;justify-content:center;align-items:flex-end}
+.crew{position:relative;width:100%;flex:1;min-height:0;display:flex;justify-content:center;align-items:flex-end}
 .crew::before{content:"";position:absolute;left:50%;bottom:0;translate:-50% 0;width:min(70%,60vh);aspect-ratio:1;border-radius:50%;background:radial-gradient(#ffffff70,#fff0 68%)}
-.m{position:relative;width:min(40%,46vh);margin:0 -9%;translate:0 110%;transition:translate .5s ease-in}
-body[data-screen="mae"] .m{translate:0 0;transition:translate .8s cubic-bezier(.2,1.3,.4,1) var(--d)}
-.m img{display:block;width:100%;filter:drop-shadow(0 12px 22px #0006)}
-.m.boss{--d:.5s;width:min(54%,62vh);z-index:2}
-.m.l,.m.r{--d:.75s;filter:brightness(.94)}
-.m b{position:absolute;left:50%;bottom:7%;translate:-50% 0;white-space:nowrap;font:600 4.2vh/1.1 "Mitr";padding:.8vh 3vh 1.1vh;border-radius:99px;background:#fff;color:#1a0d2e;border:.45vh solid #1a0d2e;box-shadow:.8vh .8vh 0 #1a0d2e}
-.m.l b{left:34%;rotate:-4deg}.m.r b{left:66%;rotate:4deg}
-.m.boss b{bottom:9%;font-size:6vh;padding:1.2vh 4.4vh 1.6vh;background:#1a0d2e;color:#fff;border:.5vh solid #fff;box-shadow:0 0 0 .6vh #1a0d2e,1vh 1vh 0 .6vh #1a0d2e}
-.m.boss b small{position:absolute;left:50%;top:-3.4vh;translate:-50% 0;font:600 2.8vh/1 "Mitr";letter-spacing:.06em;padding:.6vh 2vh .8vh;border-radius:99px;background:#ffc533;color:#1a0d2e;border:.4vh solid #1a0d2e}
-body[data-screen="mae"] .m b{animation:tagpop .6s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(var(--d) + .5s)}
+.grp{position:absolute;left:50%;bottom:0;width:min(100%,74vh);translate:-50% 110%;transition:translate .5s ease-in}
+body[data-screen="mae"] .grp{translate:-50% 8%;transition:translate .9s cubic-bezier(.2,1.2,.4,1) .4s}
+.grp img{display:block;width:100%;filter:drop-shadow(0 12px 22px #0006)}
+.grp b{position:absolute;bottom:11%;translate:-50% 0;white-space:nowrap;font:600 4.2vh/1.1 "Mitr";padding:.8vh 3vh 1.1vh;border-radius:99px;background:#fff;color:#1a0d2e;border:.45vh solid #1a0d2e;box-shadow:.8vh .8vh 0 #1a0d2e;--d:1.3s}
+.grp b.l{rotate:-4deg}.grp b.r{rotate:4deg}
+.grp b.boss{bottom:19%;z-index:2;font-size:6vh;padding:1.2vh 4.4vh 1.6vh;background:#1a0d2e;color:#fff;border:.5vh solid #fff;box-shadow:0 0 0 .6vh #1a0d2e,1vh 1vh 0 .6vh #1a0d2e;--d:1.1s}
+.grp b.boss small{position:absolute;left:50%;top:-3.4vh;translate:-50% 0;font:600 2.8vh/1 "Mitr";letter-spacing:.06em;padding:.6vh 2vh .8vh;border-radius:99px;background:#ffc533;color:#1a0d2e;border:.4vh solid #1a0d2e}
+body[data-screen="mae"] .grp b{animation:tagpop .6s cubic-bezier(.2,1.6,.4,1) both;animation-delay:var(--d)}
 @keyframes tagpop{from{scale:0}}
 .vsbadge{position:absolute;left:50%;top:22%;translate:-50% -50%;width:22vh;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--ink);font:600 9vh "Mitr";box-shadow:0 0 0 1.4vh #ffffff55,0 3vh 8vh #0005;scale:0;rotate:-180deg;transition:scale .4s,rotate .4s}
 body[data-screen="mae"] .vsbadge{scale:1;rotate:0deg;transition:scale .6s cubic-bezier(.2,1.6,.4,1) 1s,rotate .6s cubic-bezier(.2,1.6,.4,1) 1s}
@@ -135,9 +133,9 @@ body.idle{cursor:none}
 
 <div class="mae">
   <div class="side o"><div class="sub">สีส้ม</div><h2>ส้มบี้<br>ขยี้ม่วง</h2>
-    <div class="crew"><div class="m l"><img src="assets/mae-o-1.png" alt=""><b>คุณโจ</b></div><div class="m boss"><img src="assets/mae-o-2.png" alt=""><b><small>แม่สี</small>คุณบอส</b></div><div class="m r"><img src="assets/mae-o-3.png" alt=""><b>คุณแต้ว</b></div></div></div>
+    <div class="crew"><div class="grp"><img src="assets/mae-o.webp" alt=""><b class="l" style="left:16%">คุณโจ</b><b class="boss" style="left:50%"><small>แม่สี</small>คุณบอส</b><b class="r" style="left:86%">คุณแต้ว</b></div></div></div>
   <div class="side p"><div class="sub">สีม่วง</div><h2>ม่วงพุ่งปรี๊ด<br>จี๊ดถึงดาว</h2>
-    <div class="crew"><div class="m l"><img src="assets/mae-p-1.png" alt=""><b>คุณจ๋อม</b></div><div class="m boss"><img src="assets/mae-p-2.png" alt=""><b><small>แม่สี</small>คุณนุ๊ก</b></div><div class="m r"><img src="assets/mae-p-3.png" alt=""><b>คุณเผือก</b></div></div></div>
+    <div class="crew"><div class="grp"><img src="assets/mae-p.webp" alt=""><b class="l" style="left:14%">คุณจ๋อม</b><b class="boss" style="left:49%"><small>แม่สี</small>คุณนุ๊ก</b><b class="r" style="left:86%">คุณเผือก</b></div></div></div>
   <div class="vsbadge">VS</div>
 </div>
 
