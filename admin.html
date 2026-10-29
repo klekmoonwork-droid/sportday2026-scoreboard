@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7fd3ff">
+<title>กระดานคะแนน · หลังบ้าน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#ff7a1a; --purple:#6b2fb3; --gold:#ffb627;
+  --ink:#2a1640; --muted:#7a6390; --card:#ffffffe6; --line:#2a164022;
+  --sky1:#7fd3ff; --sky2:#ffe3a8;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:linear-gradient(180deg,var(--sky1),var(--sky2)) fixed;color:var(--ink);font-family:"Mitr",sans-serif}
+button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+
+.top{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;background:#7fd3ffe6;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.sc{display:grid;justify-items:center;padding:8px 6px;border-radius:18px;background:#fff;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--c)}
+.sc.o{--c:var(--orange)}.sc.p{--c:var(--purple)}
+.sc small{font:600 14px "Mitr";color:var(--c)}
+.sc b{font:600 40px/1 "Mitr";font-variant-numeric:tabular-nums}
+.top .vs{font:600 18px "Mitr"}
+
+.panel{max-width:520px;margin:0 auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom,0px));display:grid;gap:12px}
+.box{padding:14px;border-radius:20px;background:var(--card);border:2px solid var(--ink)}
+.box h3{display:flex;justify-content:space-between;align-items:baseline;font:600 17px "Mitr";margin-bottom:10px}
+.box h3 small{font:400 13px "Mitr";color:var(--muted)}
+
+.team{display:grid;gap:10px;padding:14px;border-radius:20px;background:var(--card);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--c)}
+.team.o{--c:var(--orange)}.team.p{--c:var(--purple)}
+.team h3{font:600 20px "Mitr";color:var(--c)}
+.pts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pts button{display:grid;justify-items:center;gap:2px;padding:14px 0 12px;border:0;border-radius:16px;background:var(--c);color:#fff;box-shadow:0 5px 0 color-mix(in srgb,var(--c) 55%,#000)}
+.pts button:active{translate:0 4px;box-shadow:0 1px 0 color-mix(in srgb,var(--c) 55%,#000)}
+.pts b{font:600 30px/1 "Mitr"}
+.pts small{font:500 13px "Mitr";opacity:.9}
+
+.log h3{font:600 17px "Mitr";margin-bottom:8px}
+.log ul{list-style:none;display:grid;gap:6px}
+.log li{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);font:500 15px "Mitr"}
+.log li i{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
+.log li.o{--c:var(--orange)}.log li.p{--c:var(--purple)}
+.log li span{flex:1}
+.log li time{font:400 13px "Mitr";color:var(--muted)}
+.log li button{width:36px;height:36px;border:0;border-radius:10px;background:#2a16400f;font:600 16px "Mitr"}
+.log li.none{background:none;border:0;padding:4px 0;color:var(--muted);font:400 14px "Mitr"}
+
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px;border-radius:14px;background:#2a16400d}
+.seg button{padding:12px 4px;border:0;border-radius:10px;background:none;color:var(--muted);font:600 16px "Mitr"}
+.seg button.on{color:#fff;background:var(--ink)}
+
+.reset{width:100%;padding:13px;border:2px solid #c8102e;border-radius:14px;background:#fff;color:#c8102e;font:600 16px "Mitr"}
+.err{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9;padding:12px 14px;border-radius:14px;background:#c8102e;color:#fff;font:500 15px "Mitr";text-align:center}
+
+.login{position:fixed;inset:0;z-index:20;display:grid;place-content:center;gap:12px;padding:16px;background:linear-gradient(180deg,var(--sky1),var(--sky2))}
+.login b{font:600 30px "Mitr";text-align:center;color:#fff;-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:3px 3px 0 var(--orange);margin-bottom:6px}
+.login input{width:min(320px,calc(100vw - 32px));padding:14px 16px;border-radius:14px;border:2px solid var(--ink);background:#fff;color:var(--ink);font:400 17px "Mitr"}
+.login button{padding:14px;border:0;border-radius:14px;background:var(--orange);color:#fff;font:600 17px "Mitr"}
+.login small{min-height:1.2em;text-align:center;color:#c8102e}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="sc o"><small>สีส้ม</small><b id="sO">0</b></div>
+  <span class="vs">VS</span>
+  <div class="sc p"><small>สีม่วง</small><b id="sP">0</b></div>
+</header>
+
+<main class="panel">
+  <div class="box"><h3>จอใหญ่</h3>
+    <div class="seg" id="screen"><button data-s="score">คะแนน</button><button data-s="cover">หน้าปก</button><button data-s="mae">แม่สี</button></div>
+  </div>
+  <div class="team o"><h3>สีส้ม</h3>
+    <div class="pts"><button data-t="o" data-v="10"><b>+10</b><small>ชนะเกม</small></button><button data-t="o" data-v="5"><b>+5</b><small>ชิงธง</small></button><button data-t="o" data-v="2"><b>+2</b><small>เชียร์</small></button></div>
+  </div>
+  <div class="team p"><h3>สีม่วง</h3>
+    <div class="pts"><button data-t="p" data-v="10"><b>+10</b><small>ชนะเกม</small></button><button data-t="p" data-v="5"><b>+5</b><small>ชิงธง</small></button><button data-t="p" data-v="2"><b>+2</b><small>เชียร์</small></button></div>
+  </div>
+  <div class="box log"><h3>ล่าสุด</h3><ul id="log"></ul></div>
+  <button class="reset" id="reset">ล้างคะแนนทั้งหมด</button>
+</main>
+<div class="err" id="err" hidden></div>
+
+<script type="module">
+import { watch, watchScreen, setScreen, addPoints, removeEntry, resetAll, requireLogin } from './fb.js';
+
+const KIND = {10:'ชนะเกม', 5:'ชิงธง', 2:'เชียร์'};
+const NAME = {o:'ส้ม', p:'ม่วง'};
+let log = [];
+
+const errEl = document.getElementById('err');
+let errT;
+const fail = () => { errEl.textContent = 'บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'; errEl.hidden = false; clearTimeout(errT); errT = setTimeout(() => errEl.hidden = true, 3000); };
+
+document.querySelectorAll('.pts button').forEach(b => b.onclick = () => addPoints(b.dataset.t, +b.dataset.v).catch(fail));
+const scrEl = document.getElementById('screen');
+scrEl.onclick = e => { const b = e.target.closest('button'); if(b && !b.classList.contains('on')) setScreen(b.dataset.s).catch(fail); };
+const logEl = document.getElementById('log');
+logEl.onclick = e => {
+  const b = e.target.closest('button'); if(!b) return;
+  const x = log.find(x => x.id === b.dataset.id);
+  if(x && confirm(`ลบ ${NAME[x.t]} +${x.v} ${KIND[x.v]}?`)) removeEntry(x.id).catch(fail);
+};
+document.getElementById('reset').onclick = () => { if(confirm('ล้างคะแนนทั้งหมด?')) resetAll().catch(fail); };
+
+const hhmm = at => at ? new Date(at).toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'}) : '';
+function render(){
+  for(const t of ['o','p']) document.getElementById('s'+t.toUpperCase()).textContent = log.filter(x => x.t === t).reduce((a,x) => a + x.v, 0);
+  logEl.innerHTML = log.length ? log.slice().reverse().map(x =>
+    `<li class="${x.t}"><i></i><span>${NAME[x.t]} +${x.v} ${KIND[x.v]}</span><time>${hhmm(x.at)}</time><button data-id="${x.id}">✕</button></li>`).join('')
+    : '<li class="none">—</li>';
+}
+
+requireLogin(() => {
+  watch(v => { log = v; render(); });
+  watchScreen(v => scrEl.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.s === v)));
+});
+render();
+</script>
+</body>
+</html>
