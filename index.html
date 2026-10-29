@@ -2,6 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
+<meta name="v" content="5">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sportday Scoreboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -238,6 +239,12 @@ let idleT;
 const wake = () => { document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => document.body.classList.add('idle'), 3000); };
 addEventListener('mousemove', wake); wake();
 
+// reload by itself when a newer version of this page is published (bump <meta name="v"> on each push)
+const ver = html => (html.match(/<meta name="v" content="(\d+)">/) || [])[1];
+setInterval(async () => {
+  const live = await fetch(location.pathname, {cache:'no-store'}).then(r => r.text()).then(ver).catch(() => null);
+  if(live && live !== document.querySelector('meta[name=v]').content) location.reload();
+}, 60000);
 </script>
 </body>
 </html>
