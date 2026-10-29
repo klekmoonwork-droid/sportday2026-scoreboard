@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="v" content="7">
+<meta name="v" content="8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sportday Scoreboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,15 +43,12 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 
 /* scores */
 .board{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:3vw;min-height:0}
-.team{--c:var(--orange);position:relative;height:100%;max-height:64vh;display:grid;grid-template-rows:auto 1fr auto;justify-items:center;align-items:center;padding:3vh 2vw 2.4vh;border-radius:4vh;background:var(--card);backdrop-filter:blur(8px);border:.45vh solid var(--ink);box-shadow:1.2vh 1.2vh 0 var(--c);transition:transform .4s}
+.team{--c:var(--orange);position:relative;height:100%;max-height:64vh;display:grid;grid-template-rows:auto 1fr;justify-items:center;align-items:center;padding:3vh 2vw 2.4vh;border-radius:4vh;background:var(--card);backdrop-filter:blur(8px);border:.45vh solid var(--ink);box-shadow:1.2vh 1.2vh 0 var(--c);transition:transform .4s}
 .team.p{--c:var(--purple)}
 .team .name{font:600 5.6vh/1 "Mitr";color:#fff;padding:1.2vh 5vh 1.6vh;border-radius:99px;background:var(--c);border:.35vh solid var(--ink)}
 .team .num{font:600 34vh/1 "Mitr";font-variant-numeric:tabular-nums;color:#fff;-webkit-text-stroke:.5vh var(--ink);paint-order:stroke fill;text-shadow:1.4vh 1.4vh 0 var(--c)}
 .team .num.bump{animation:bump .7s cubic-bezier(.3,1.6,.5,1)}
 @keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}
-.team .stats{display:flex;gap:1.4vh}
-.team .stats span{font:500 3.4vh "Mitr";padding:.6vh 2.4vh;border-radius:99px;background:#fff;border:1px solid var(--line);color:var(--muted)}
-.team .stats b{color:var(--ink);font-weight:600}
 .crown{position:absolute;top:-9.5vh;left:50%;width:11vh;translate:-50% 0;opacity:0;transform:translateY(2vh) scale(.6);transition:all .5s cubic-bezier(.3,1.6,.5,1)}
 .team.lead .crown{opacity:1;transform:none;animation:float 2.4s ease-in-out infinite .5s}
 @keyframes float{50%{transform:translateY(-1vh) rotate(-4deg)}}
@@ -159,14 +156,12 @@ body.idle{cursor:none}
       <svg class="crown"><use href="#crown"/></svg>
       <div class="name">สีส้ม</div>
       <div class="num" id="sO">0</div>
-      <div class="stats"><span>ชนะเกม <b id="gO">0</b></span><span>ชิงธง <b id="fO">0</b></span><span>เชียร์ <b id="cO">0</b></span></div>
     </div>
     <div class="vs">VS</div>
     <div class="team p" id="tP">
       <svg class="crown"><use href="#crown"/></svg>
       <div class="name">สีม่วง</div>
       <div class="num" id="sP">0</div>
-      <div class="stats"><span>ชนะเกม <b id="gP">0</b></span><span>ชิงธง <b id="fP">0</b></span><span>เชียร์ <b id="cP">0</b></span></div>
     </div>
   </section>
 
@@ -175,11 +170,10 @@ body.idle{cursor:none}
 <div class="ctl tl"><button id="fs" title="Fullscreen">⛶</button></div>
 
 <script type="module">
-import { watch, watchScreen } from './fb.js?v=7';
+import { watch, watchScreen } from './fb.js?v=8';
 
 const COL = {o:'#ff7a1a', p:'#6b2fb3'};
 let log = [];
-const count = (t, v) => log.filter(x => x.t === t && x.v === v).length;
 const score = t => log.filter(x => x.t === t).reduce((a,x) => a + x.v, 0);
 
 // title letters pop in (split by Thai grapheme so vowels stay on their consonant)
@@ -206,9 +200,6 @@ function render(){
   for(const t of ['o','p']){
     const T = t.toUpperCase(), s = score(t), el = document.getElementById('s'+T);
     el.textContent = s;
-    document.getElementById('g'+T).textContent = count(t, 10);
-    document.getElementById('f'+T).textContent = count(t, 5);
-    document.getElementById('c'+T).textContent = count(t, 2);
     if(prev && s > prev[t] && document.body.dataset.screen === 'score') celebrate(t, s - prev[t]);
     if(prev && s !== prev[t]){ el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
   }
