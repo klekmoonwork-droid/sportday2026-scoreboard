@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="v" content="6">
+<meta name="v" content="7">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7fd3ff">
 <title>กระดานคะแนน · หลังบ้าน</title>
@@ -97,7 +97,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
 <div class="err" id="err" hidden></div>
 
 <script type="module">
-import { watch, watchScreen, watchConnected, setScreen, addPoints, removeEntry, resetAll, requireLogin } from './fb.js';
+import { watch, watchScreen, watchConnected, setScreen, addPoints, removeEntry, resetAll, requireLogin } from './fb.js?v=7';
 
 const KIND = {10:'ชนะเกม', 5:'ชิงธง', 2:'เชียร์'};
 const NAME = {o:'ส้ม', p:'ม่วง'};
@@ -141,7 +141,9 @@ requireLogin(() => {
   });
 });
 render();
-// reload by itself when a newer version of this page is published (bump <meta name="v"> on each push)
+</script>
+<script>
+// reload by itself when a newer version of this page is published (bump <meta name="v"> and the fb.js ?v= on each push); kept outside the module so it still runs if the module fails to load
 const ver = html => (html.match(/<meta name="v" content="(\d+)">/) || [])[1];
 setInterval(async () => {
   const live = await fetch(location.pathname, {cache:'no-store'}).then(r => r.text()).then(ver).catch(() => null);

@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="v" content="6">
+<meta name="v" content="7">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sportday Scoreboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -175,7 +175,7 @@ body.idle{cursor:none}
 <div class="ctl tl"><button id="fs" title="Fullscreen">⛶</button></div>
 
 <script type="module">
-import { watch, watchScreen } from './fb.js';
+import { watch, watchScreen } from './fb.js?v=7';
 
 const COL = {o:'#ff7a1a', p:'#6b2fb3'};
 let log = [];
@@ -239,7 +239,9 @@ let idleT;
 const wake = () => { document.body.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => document.body.classList.add('idle'), 3000); };
 addEventListener('mousemove', wake); wake();
 
-// reload by itself when a newer version of this page is published (bump <meta name="v"> on each push)
+</script>
+<script>
+// reload by itself when a newer version of this page is published (bump <meta name="v"> and the fb.js ?v= on each push); kept outside the module so it still runs if the module fails to load
 const ver = html => (html.match(/<meta name="v" content="(\d+)">/) || [])[1];
 setInterval(async () => {
   const live = await fetch(location.pathname, {cache:'no-store'}).then(r => r.text()).then(ver).catch(() => null);
