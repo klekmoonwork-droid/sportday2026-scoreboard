@@ -56,6 +56,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
 .mode{display:grid;gap:12px}
 
 .reset{width:100%;padding:13px;border:2px solid #c8102e;border-radius:14px;background:#fff;color:#c8102e;font:600 16px "Mitr"}
+.net{position:fixed;left:0;right:0;bottom:0;z-index:8;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#c8102e;color:#fff;font:600 15px "Mitr";text-align:center}
 .err{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9;padding:12px 14px;border-radius:14px;background:#c8102e;color:#fff;font:500 15px "Mitr";text-align:center}
 
 .login{position:fixed;inset:0;z-index:20;display:grid;place-content:center;gap:12px;padding:16px;background:linear-gradient(180deg,var(--sky1),var(--sky2))}
@@ -67,6 +68,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
 </style>
 </head>
 <body>
+<div class="net" id="net" hidden>ไม่ได้เชื่อมต่อ</div>
 <header class="top">
   <div class="sc o"><small>สีส้ม</small><b id="sO">0</b></div>
   <span class="vs">VS</span>
@@ -80,7 +82,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
   <div class="box" id="pMae" hidden><h3>แม่สี</h3>
     <div class="seg" id="mae"><button data-s="mae">สองสี</button><button data-s="mae-o">สีส้ม</button><button data-s="mae-p">สีม่วง</button></div>
   </div>
-  <section class="mode" id="pScore" hidden>
+  <section class="mode" id="pScore">
   <div class="team o"><h3>สีส้ม</h3>
     <div class="pts"><button data-t="o" data-v="10"><b>+10</b><small>ชนะเกม</small></button><button data-t="o" data-v="5"><b>+5</b><small>ชิงธง</small></button><button data-t="o" data-v="2"><b>+2</b><small>เชียร์</small></button></div>
   </div>
@@ -94,7 +96,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
 <div class="err" id="err" hidden></div>
 
 <script type="module">
-import { watch, watchScreen, setScreen, addPoints, removeEntry, resetAll, requireLogin } from './fb.js';
+import { watch, watchScreen, watchConnected, setScreen, addPoints, removeEntry, resetAll, requireLogin } from './fb.js';
 
 const KIND = {10:'ชนะเกม', 5:'ชิงธง', 2:'เชียร์'};
 const NAME = {o:'ส้ม', p:'ม่วง'};
@@ -124,6 +126,9 @@ function render(){
 }
 
 requireLogin(() => {
+  // show the bar only after a short grace period so the first connect doesn't flash it
+  let netT;
+  watchConnected(on => { clearTimeout(netT); if(on) document.getElementById('net').hidden = true; else netT = setTimeout(() => document.getElementById('net').hidden = false, 2000); });
   watch(v => { log = v; render(); });
   // controls follow what the big screen shows: points only on the score screen
   watchScreen(v => {

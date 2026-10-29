@@ -23,6 +23,8 @@ export const removeEntry = (id) => remove(ref(db, `score/log/${id}`));
 export const resetAll = () => remove(ref(db, 'score/log'));
 // big screen page: 'score' | 'cover' | 'mae'
 export const watchScreen = (cb) => onValue(ref(db, 'score/screen'), (s) => cb(s.val() || 'score'));
+// true while this device has a live connection to the database
+export const watchConnected = (cb) => onValue(ref(db, '.info/connected'), (s) => cb(s.val() === true));
 export const setScreen = (v) => set(ref(db, 'score/screen'), v === 'score' ? null : v);
 
 export function requireLogin(onReady) {
