@@ -53,6 +53,8 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
 .seg button{padding:12px 4px;border:0;border-radius:10px;background:none;color:var(--muted);font:600 16px "Mitr"}
 .seg button.on{color:#fff;background:var(--ink)}
 
+.mode{display:grid;gap:12px}
+
 .reset{width:100%;padding:13px;border:2px solid #c8102e;border-radius:14px;background:#fff;color:#c8102e;font:600 16px "Mitr"}
 .err{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9;padding:12px 14px;border-radius:14px;background:#c8102e;color:#fff;font:500 15px "Mitr";text-align:center}
 
@@ -75,6 +77,10 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
   <div class="box"><h3>จอใหญ่</h3>
     <div class="seg" id="screen"><button data-s="score">คะแนน</button><button data-s="cover">หน้าปก</button><button data-s="mae">แม่สี</button></div>
   </div>
+  <div class="box" id="pMae" hidden><h3>แม่สี</h3>
+    <div class="seg" id="mae"><button data-s="mae">สองสี</button><button data-s="mae-o">สีส้ม</button><button data-s="mae-p">สีม่วง</button></div>
+  </div>
+  <section class="mode" id="pScore" hidden>
   <div class="team o"><h3>สีส้ม</h3>
     <div class="pts"><button data-t="o" data-v="10"><b>+10</b><small>ชนะเกม</small></button><button data-t="o" data-v="5"><b>+5</b><small>ชิงธง</small></button><button data-t="o" data-v="2"><b>+2</b><small>เชียร์</small></button></div>
   </div>
@@ -83,6 +89,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulatio
   </div>
   <div class="box log"><h3>ล่าสุด</h3><ul id="log"></ul></div>
   <button class="reset" id="reset">ล้างคะแนนทั้งหมด</button>
+  </section>
 </main>
 <div class="err" id="err" hidden></div>
 
@@ -98,8 +105,8 @@ let errT;
 const fail = () => { errEl.textContent = 'บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง'; errEl.hidden = false; clearTimeout(errT); errT = setTimeout(() => errEl.hidden = true, 3000); };
 
 document.querySelectorAll('.pts button').forEach(b => b.onclick = () => addPoints(b.dataset.t, +b.dataset.v).catch(fail));
-const scrEl = document.getElementById('screen');
-scrEl.onclick = e => { const b = e.target.closest('button'); if(b && !b.classList.contains('on')) setScreen(b.dataset.s).catch(fail); };
+const scrEl = document.getElementById('screen'), maeEl = document.getElementById('mae');
+scrEl.onclick = maeEl.onclick = e => { const b = e.target.closest('button'); if(b && !b.classList.contains('on')) setScreen(b.dataset.s).catch(fail); };
 const logEl = document.getElementById('log');
 logEl.onclick = e => {
   const b = e.target.closest('button'); if(!b) return;
@@ -118,7 +125,14 @@ function render(){
 
 requireLogin(() => {
   watch(v => { log = v; render(); });
-  watchScreen(v => scrEl.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.s === v)));
+  // controls follow what the big screen shows: points only on the score screen
+  watchScreen(v => {
+    const mode = v.startsWith('mae') ? 'mae' : v;
+    scrEl.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.s === mode));
+    maeEl.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.s === v));
+    document.getElementById('pScore').hidden = mode !== 'score';
+    document.getElementById('pMae').hidden = mode !== 'mae';
+  });
 });
 render();
 </script>
